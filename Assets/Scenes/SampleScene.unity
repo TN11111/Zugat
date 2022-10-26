@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 0.5
-  JumpPow: 1.7
+  JumpPow: 3
   animator: {fileID: 288914075}
   Bullet: {fileID: 1827731918061572, guid: 31921d45a016d714188552e2972706a2, type: 3}
   cooldown: 100

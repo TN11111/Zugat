@@ -43,22 +43,8 @@ public class PlayerController : MonoBehaviour
         _moveVelocity.x = Input.GetAxis("Horizontal") * MoveSpeed;
         _moveVelocity.z = Input.GetAxis("Vertical") * MoveSpeed;
 
-        if (IsGrounded)
-        {
-            jumpFlg = false;
-            Debug.Log("地上なう");
-            if (Input.GetButtonDown("Jump"))
-            {
-                Debug.Log("ジャンプ");
-                _moveVelocity.y = JumpPow;
-            }
-        }
-        else
-        {
-            Debug.Log("落下なう");
-            _moveVelocity.y += (Physics.gravity.y / 3) * Time.deltaTime;
-            jumpFlg = true;
-        }
+        //jumpAction();
+        fryAction();
 
         //_characterController.Move(_moveVelocity * Time.deltaTime);
 
@@ -106,6 +92,49 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    void jumpAction()
+    {
+        if (IsGrounded)
+        {
+            jumpFlg = false;
+            Debug.Log("地上なう");
+            if (Input.GetButtonDown("Jump"))
+            {
+                Debug.Log("ジャンプ");
+                _moveVelocity.y = JumpPow;
+            }
+        }
+        else
+        {
+            Debug.Log("落下なう");
+            _moveVelocity.y += (Physics.gravity.y / 3) * Time.deltaTime;
+            jumpFlg = true;
+        }
+    }
+
+    void fryAction()
+    {
+        if (Input.GetButton("Jump"))
+        {
+
+            Debug.Log("上昇なう");
+            _moveVelocity.y += JumpPow / 240;
+            jumpFlg = true;
+        }
+        else if (!IsGrounded)
+        {
+            Debug.Log("下降なう");
+            _moveVelocity.y += (Physics.gravity.y / 2) * Time.deltaTime;
+        }
+        else
+        {
+            _moveVelocity.y = 0;
+            jumpFlg = false;
+        }
+
+    }
+
 
     private bool IsGrounded
     {
