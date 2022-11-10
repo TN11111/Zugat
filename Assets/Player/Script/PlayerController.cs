@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour
     private bool shotFlg;
     [SerializeField] public int cooldown;
 
+    public ParticleSystem ps;
+
+    GameObject obj;
+
     private Vector3 ShotPos;
 
     void Start()
@@ -35,6 +39,14 @@ public class PlayerController : MonoBehaviour
 
         shotFlame = 0;
         shotFlg = false;
+
+        obj = GameObject.Find("Laser");
+
+        ps = obj.GetComponentInChildren<ParticleSystem>();
+
+        obj.SetActive(false);
+
+        ps.Stop();
     }
 
     // Update is called once per frame
@@ -46,12 +58,20 @@ public class PlayerController : MonoBehaviour
         //jumpAction();
         fryAction();
 
-        //_characterController.Move(_moveVelocity * Time.deltaTime);
-
         animator.SetFloat("MoveSpeed", new Vector3(_moveVelocity.x, 0, _moveVelocity.z).magnitude);
         animator.SetBool("jumpFlg", jumpFlg);
 
-        ShotBullet();
+        //ShotBullet();
+
+        if (!shotFlg)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                obj.SetActive(true);
+                ps.Play();
+            }
+        }
+
     }
 
     void FixedUpdate()
@@ -89,6 +109,9 @@ public class PlayerController : MonoBehaviour
                 Instantiate(Bullet, ShotPos, transform.rotation);
                 shotFlame += cooldown;
                 shotFlg = true;
+
+                obj.SetActive(true);
+                ps.Play();
             }
         }
     }
@@ -134,7 +157,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
 
     private bool IsGrounded
     {
